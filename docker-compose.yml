@@ -1,0 +1,30 @@
+version: "3.8"
+services:
+  postgres:
+    image: postgres:15
+    container_name: translation_postgres
+    restart: always
+    environment:
+      POSTGRES_USER: translation_user
+      POSTGRES_PASSWORD: translation_pass
+      POSTGRES_DB: translation_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+
+  app:
+    build: .
+    container_name: translation_app
+    depends_on:
+      - postgres
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/translation_db
+      SPRING_DATASOURCE_USERNAME: translation_user
+      SPRING_DATASOURCE_PASSWORD: translation_pass
+    ports:
+      - "8080:8080"
+
+volumes:
+  pgdata:
