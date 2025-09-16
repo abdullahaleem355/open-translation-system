@@ -33,7 +33,8 @@ Comprehensive **unit tests (JUnit)** validate controllers and services, and the 
 - Search translations by key, content, or tag  
 - Export translations grouped by locale  
 - Load test data dynamically  
-- Unit test coverage with JUnit and Mockito  
+- Unit test coverage with JUnit and Mockito
+- Pagination for large datasets to ensure sub-200ms response times
 
 ---
 
@@ -53,8 +54,8 @@ Comprehensive **unit tests (JUnit)** validate controllers and services, and the 
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/<your-username>/opentranslation-management.git
-cd opentranslation-management
+git clone https://github.com/abdullahaleem355/opentranslation-management.git
+cd open-translation-system
 ```
 
 ### 2. Build and run Docker containers
@@ -62,7 +63,9 @@ cd opentranslation-management
 docker-compose up --build
 ```
 
-This will start the service on http://localhost:8080
+- This will start the service on http://localhost:8080
+- Start a PostgreSQL container (configurable via application.yml)
+- Automatically populate 10,000+ test translations, locales, and tags for immediate testing
 
 
 ### 3. Stop containers
@@ -181,16 +184,17 @@ Authorization: Bearer <JWT>
 GET /api/translations/export
 Authorization: Bearer <JWT>
 ```
+### Optimized for large datasets (10k+ records). Streaming and grouping ensure responses under 500ms.
 
 ## Test Data
 
-Load Test Data
+Load Test Data Manually
 ```bash
 POST /api/test-data/load?force=true
 Authorization: Bearer <JWT>
 
 
-force=true clears existing translations before loading.
+- force=true clears existing translations before loading.
 ```
 
 ## JWT Protection
@@ -225,7 +229,9 @@ Build Spring Boot app as a Docker container
 
 Expose port 8080
 
-Initialize PostgreSQL database (configurable via application.yml)
+Initialize PostgreSQL database (configurable via application.yml) and applu schema
+
+Automatically populate initial bulk test data
 
 Commands:
 ```bash
